@@ -43,9 +43,9 @@ async fn load_config_file(config_file: &Path) -> Result<Config> {
         toml::from_str(
             &read_to_string(config_file)
                 .await
-                .context("Failed to read config file")?,
+                .context("Failed to read the configuration file")?,
         )
-        .context("Failed to parse config file")?
+        .context("Failed to parse the configuration file")?
     } else {
         // Ask for API base URL
         let api_base_url = Text::new("Enter API base URL:")
@@ -107,7 +107,7 @@ async fn load_config_file(config_file: &Path) -> Result<Config> {
         create_dir_all(
             config_file
                 .parent()
-                .context("Failed to get config directory")?,
+                .context("Failed to retrieve the configuration directory")?,
         )
         .await
         .context("Failed to create config directory")?;
@@ -115,7 +115,7 @@ async fn load_config_file(config_file: &Path) -> Result<Config> {
         // Write config to file
         write(
             config_file,
-            toml::to_string(&config).context("Failed to serialize config")?,
+            toml::to_string(&config).context("Failed to serialize the configuration")?,
         )
         .await
         .context("Failed to write config to file")?;
@@ -134,7 +134,7 @@ async fn run_git_command(args: &[&str]) -> Result<String> {
         .args(args)
         .output()
         .await
-        .context("Failed to run Git command")?;
+        .context("Failed to execute the Git command")?;
 
     // If the command failed, return early with the error from stderr
     ensure!(
@@ -144,7 +144,7 @@ async fn run_git_command(args: &[&str]) -> Result<String> {
     );
 
     // Return the command output only if stdout has no invalid UTF-8 characters
-    Ok(String::from_utf8(res.stdout).context("Failed to decode Git command output")?)
+    Ok(String::from_utf8(res.stdout).context("Failed to decode the output of the Git command")?)
 }
 
 async fn generate_commit_message(
@@ -166,7 +166,7 @@ async fn generate_commit_message(
                 .into(),
         ])
         .build()
-        .context("Failed to build request payload")?;
+        .context("Failed to construct the request payload")?;
 
     let response = http_client
         .post(format!("{}/chat/completions", &config.api_base_url))
@@ -174,11 +174,11 @@ async fn generate_commit_message(
         .json(&payload)
         .send()
         .await
-        .context("Failed to send request to the Inference API service")?
+        .context("Failed to send the request to the Inference API service")?
         .error_for_status()?
         .json::<CommitMessageCandidates>()
         .await
-        .context("Failed to parse response from the Inference API service")?;
+        .context("Failed to parse the response from the Inference API service")?;
 
     let commit_message = response
         .choices
@@ -236,7 +236,7 @@ async fn main() -> Result<()> {
 
     // Path to config file
     let config_file = home_dir()
-        .context("Failed to get user home directory")?
+        .context("Failed to retrieve the user's home directory")?
         .join(".acm/config.toml");
 
     // Load config file or create if not exists
@@ -261,7 +261,9 @@ async fn main() -> Result<()> {
     // Ask user to edit the generated commit message if needed
     let edited_commit_message = Text::new("Your generated commit message:")
         .with_initial_value(&commit_message)
-        .with_validator(required!("A commit message is required"))
+        .with_validator(required!(
+            "Please provide a commit message to create a commit"
+        ))
         .with_help_message(
             "Press Enter to create a new commit with the current message or ESC to cancel",
         )
