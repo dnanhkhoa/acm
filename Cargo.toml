@@ -17,3 +17,9 @@ spinoff = "0.8.0"
 tokio = { version = "1.35.1", features = ["full"] }
 toml = "0.8.8"
 which = "5.0.0"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
