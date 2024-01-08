@@ -1,0 +1,82 @@
+name: Publish
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  publish-to-github:
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            use-cross: false
+
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            use-cross: true
+
+          - os: windows-latest
+            target: x86_64-pc-windows-gnu
+            use-cross: false
+
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            use-cross: false
+
+          - os: windows-latest
+            target: aarch64-pc-windows-msvc
+            use-cross: false
+
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            use-cross: false
+
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            use-cross: false
+
+    steps:
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cargo build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          use-cross: ${{ matrix.use-cross }}
+          args: --release --target ${{ matrix.target }}
+
+      - name: Package binaries
+        shell: bash
+        env:
+          PACKAGE_NAME: acm
+        run: |
+          package="${{ env.PACKAGE_NAME }}-${{ github.ref_name }}-${{ matrix.target }}"
+
+          mkdir -p "$package"
+
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            cp "target/${{ matrix.target }}/release/${{ env.PACKAGE_NAME }}.exe" "$package/"
+            7z a "$package.zip" "$package"
+          else
+            cp "target/${{ matrix.target }}/release/${{ env.PACKAGE_NAME }}" "$package/"
+            tar czf "$package.tar.gz" "$package"
+          fi
+
+      - name: Upload binaries to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "*-${{ github.ref_name }}-${{ matrix.target }}.*"
