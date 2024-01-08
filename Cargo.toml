@@ -1,5 +1,5 @@
 [package]
-name = "acm"
+name = "acm-cli"
 version = "0.1.0"
 edition = "2021"
 authors = ["Khoa Duong <dnakhoa@icloud.com>"]
@@ -10,6 +10,10 @@ homepage = "https://github.com/dnanhkhoa/acm"
 repository = "https://github.com/dnanhkhoa/acm"
 keywords = ["git", "commit", "ai", "llm", "gpt"]
 categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "acm"
+path = "src/main.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

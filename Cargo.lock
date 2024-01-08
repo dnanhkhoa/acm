@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "acm"
+name = "acm-cli"
 version = "0.1.0"
 dependencies = [
  "anyhow",
