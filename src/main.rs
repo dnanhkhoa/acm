@@ -157,11 +157,11 @@ async fn generate_commit_message(
         .model(&config.model_name)
         .messages([
             ChatCompletionRequestSystemMessageArgs::default()
-                .content(&*config.system_prompt)
+                .content(&config.system_prompt)
                 .build()?
                 .into(),
             ChatCompletionRequestUserMessageArgs::default()
-                .content(&*config.user_prompt.replace("{}", git_diffs))
+                .content(config.user_prompt.replace("{}", git_diffs))
                 .build()?
                 .into(),
         ])
