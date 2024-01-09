@@ -68,7 +68,7 @@ async fn load_config_file(config_file: &Path) -> Result<Config> {
 
         // Ask for system prompt
         let system_prompt = Text::new("Enter system prompt:")
-            .with_default("You are required to write a meaningful commit message for the given code changes. The commit message must comply with the Conventional Commits specification, which follows the format: `type(scope): description`. The `type` must be one of the following: feat, fix, docs, style, refactor, perf, test, build, ci, chore, or revert. The `scope` indicates the area of the codebase that the changes affect. The `description` must be concise and written in a single sentence without a period at the end.")
+            .with_default("You are required to write a meaningful commit message for the given code changes. The commit message must have the format: `type(scope): description`. The `type` must be one of the following: feat, fix, docs, style, refactor, perf, test, build, ci, chore, or revert. The `scope` indicates the area of the codebase that the changes affect. The `description` must be concise and written in a single sentence without a period at the end.")
             .with_validator(required!("System prompt is required"))
             .with_help_message("Press Enter to use the default system prompt")
             .prompt()?;
