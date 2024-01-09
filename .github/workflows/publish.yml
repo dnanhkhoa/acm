@@ -80,3 +80,19 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: "*-${{ github.ref_name }}-${{ matrix.target }}.*"
+
+  publish-to-cargo:
+    name: Publish to Cargo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cargo publish
+        uses: actions-rs/cargo@v1
+        with:
+          command: publish
+          args: --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
