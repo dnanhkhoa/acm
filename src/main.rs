@@ -18,8 +18,8 @@ use which::which;
 
 #[derive(Serialize, Deserialize)]
 struct Config {
-    api_base_url: String,  // The base URL of the Inference API service
-    api_key: String,       // Your API key from the Inference API service
+    api_base_url: String,  // The base URL of the Inference API provider
+    api_key: String,       // Your API key from the Inference API provider
     model_name: String,    // The ID of the model to use
     system_prompt: String, // The contents of the system prompt
     user_prompt: String,   // The contents of the user prompt
@@ -174,11 +174,11 @@ async fn generate_commit_message(
         .json(&payload)
         .send()
         .await
-        .context("Failed to send the request to the Inference API service")?
+        .context("Failed to send the request to the Inference API provider")?
         .error_for_status()?
         .json::<CommitMessageCandidates>()
         .await
-        .context("Failed to parse the response from the Inference API service")?;
+        .context("Failed to parse the response from the Inference API provider")?;
 
     let commit_message = response
         .choices
