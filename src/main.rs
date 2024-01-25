@@ -3,6 +3,7 @@ use async_openai::types::{
     ChatCompletionRequestSystemMessageArgs, ChatCompletionRequestUserMessageArgs,
     ChatCompletionResponseMessage, CreateChatCompletionRequestArgs,
 };
+use clap::command;
 use dirs::home_dir;
 use inquire::{required, CustomType, Password, PasswordDisplayMode, Text};
 use regex::Regex;
@@ -206,6 +207,9 @@ async fn generate_commit_message(
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    // Add --version flag
+    command!().get_matches();
+
     // Check if Git is installed
     which("git").context(
         "Git not found, please install it first or check your PATH environment variable",
