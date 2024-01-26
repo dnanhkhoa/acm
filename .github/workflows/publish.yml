@@ -71,9 +71,11 @@ jobs:
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             cp "target/${{ matrix.target }}/release/${{ env.PACKAGE_NAME }}.exe" "$package/"
             7z a "$package.zip" "$package"
+            7z h -scrcSHA256 "$package.zip" > "$package.zip.sha256"
           else
             cp "target/${{ matrix.target }}/release/${{ env.PACKAGE_NAME }}" "$package/"
             tar czf "$package.tar.gz" "$package"
+            openssl dgst -sha256 "$package.tar.gz" > "$package.tar.gz.sha256"
           fi
 
       - name: Upload binaries to release
