@@ -19,7 +19,41 @@ impl Default for Config {
         Self {
             base_url: "https://api.together.xyz/v1".to_string(),
             api_key: String::new(),
-            params: json!({}),
+            params: json!({
+                "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+                "max_tokens": 128,
+                "temperature": 0,
+                "top_p": 0.1,
+                "n": 1,
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "\
+                        You will be provided with an output from the `git diff --staged` command. Your task is to construct a clean and comprehensive commit message for the code changes in JSON format with the following keys:\n\
+                        - type: A label from the following list [feat, fix, docs, style, refactor, perf, test, build, ci, chore] that represents the code changes\n\
+                        - description: A succinct description of the code changes in a single sentence, without a period at the end\
+                        "
+                    }
+                ],
+                "response_format": {
+                    "type": "json_object",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "type",
+                            "description"
+                        ]
+                    }
+                }
+            }),
             custom_message: Some("||/type||: ||/description||".to_string()),
         }
     }
