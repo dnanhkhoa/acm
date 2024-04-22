@@ -17,44 +17,43 @@ struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            base_url: "https://api.together.xyz/v1".to_string(),
+            base_url: "https://api.perplexity.ai".to_string(),
             api_key: String::new(),
             params: json!({
-                "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
-                "max_tokens": 128,
-                "temperature": 0,
-                "top_p": 0.1,
+                "model": "llama-3-70b-instruct",
+                "max_tokens": 256,
                 "n": 1,
                 "messages": [
                     {
                         "role": "system",
                         "content": "\
-                        You will be provided with an output from the `git diff --staged` command. Your task is to construct a clean and comprehensive commit message for the code changes in JSON format with the following keys:\n\
-                        - type: A label from the following list [feat, fix, docs, style, refactor, perf, test, build, ci, chore] that represents the code changes\n\
-                        - description: A succinct description of the code changes in a single sentence, without a period at the end\
+                        You will be provided with the output from the `git diff --staged` command.\n\
+                        Your task is to craft a concise and descriptive commit message that accurately reflects the code changes.\n\
+                        \n\
+                        Please adhere to the Conventional Commits specification, formatting the message as follows:\n\
+                        <type>(<scope>): <description>\n\
+                        \n\
+                        - `type`: Choose one of the following based on the nature of the changes:\n\
+                        * feat: A new feature\n\
+                        * fix: A bug fix\n\
+                        * docs: Documentation changes\n\
+                        * style: Changes that do not affect the meaning of the code (formatting, whitespace, etc.)\n\
+                        * refactor: A code change that neither fixes a bug nor adds a feature\n\
+                        * perf: A code change that improves performance\n\
+                        * test: Adding missing tests or correcting existing tests\n\
+                        * build: Changes that affect the build system or external dependencies\n\
+                        * ci: Changes to the CI configuration files and scripts\n\
+                        * chore: Other changes that don't modify src or test files\n\
+                        \n\
+                        - `scope` (optional): A specific area or module of the codebase that the changes affect, enclosed in parentheses (e.g., `feat(parser):`)\n\
+                        - `description`: A concise summary of the changes in a single, lowercase sentence without ending punctuation\n\
+                        \n\
+                        Please provide only the commit message in your response, as it will be used directly in a git commit command.\
                         "
                     }
-                ],
-                "response_format": {
-                    "type": "json_object",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "type": {
-                                "type": "string"
-                            },
-                            "description": {
-                                "type": "string"
-                            }
-                        },
-                        "required": [
-                            "type",
-                            "description"
-                        ]
-                    }
-                }
+                ]
             }),
-            custom_message: Some("||/type||: ||/description||".to_string()),
+            custom_message: None,
         }
     }
 }
