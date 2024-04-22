@@ -1,0 +1,33 @@
+base_url = "https://api.together.xyz/v1"
+api_key = ""
+custom_message = "||/type||: ||/description||"
+
+[params]
+max_tokens = 128
+model = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+n = 1
+temperature = 0
+top_p = 0.1
+
+[[params.messages]]
+content = """
+You will be provided with an output from the `git diff --staged` command. Your task is to construct a clean and comprehensive commit message for the code changes in JSON format with the following keys:
+- type: A label from the following list [feat, fix, docs, style, refactor, perf, test, build, ci, chore] that represents the code changes
+- description: A succinct description of the code changes in a single sentence, without a period at the end"""
+role = "system"
+
+[params.response_format]
+type = "json_object"
+
+[params.response_format.schema]
+required = [
+    "type",
+    "description",
+]
+type = "object"
+
+[params.response_format.schema.properties.description]
+type = "string"
+
+[params.response_format.schema.properties.type]
+type = "string"
