@@ -137,8 +137,8 @@ fn main() -> Result<()> {
         "--function-context",
         "--no-ext-diff",
         "--",
-        ":!*.lock",  // Ignore .lock files
-        ":!*.lockb", // Ignore .lockb files
+        ":(exclude)*.lock*", // Ignore files ending with .lock and any extension after
+        ":(exclude)*-lock.*", // Ignore files with -lock. in the name
     ])?
     .trim()
     .to_string();
