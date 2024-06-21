@@ -18,15 +18,15 @@ path = "src/main.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.79"
-clap = { version = "4.5.0", features = ["cargo"] }
-confy = "0.6.0"
+anyhow = "1.0.86"
+clap = { version = "4.5.7", features = ["cargo"] }
+confy = "0.6.1"
 dirs = "5.0.1"
 inquire = "0.6.2"
-serde = { version = "1.0.196", features = ["derive"] }
+serde = { version = "1.0.203", features = ["derive"] }
 spinoff = { version = "0.8.0", default-features = false, features = ["dots"] }
-ureq = { version = "2.9.5", features = ["json"] }
-which = "6.0.0"
+ureq = { version = "2.9.7", features = ["json"] }
+which = "6.0.1"
 
 [profile.release]
 opt-level = "z"
