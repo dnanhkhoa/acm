@@ -10,7 +10,7 @@ A dead-simple AI-powered CLI tool for effortlessly crafting meaningful Git commi
 - Supports the [Conventional Commits standard](https://www.conventionalcommits.org)
 - Customizable prompts
 - JSON mode support
-- Compatible with various LLM API providers, including [OpenAI](https://openai.com), [OpenRouter](http://openrouter.ai), [Together AI](https://www.together.ai), [Anyscale](https://www.anyscale.com), and more
+- Compatible with various LLM API providers, including [OpenAI](https://openai.com), [OpenRouter](http://openrouter.ai), [Together AI](https://www.together.ai), [Anyscale](https://www.anyscale.com), [Groq](https://groq.com) and more
 
 ## Installation
 
